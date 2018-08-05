@@ -8,35 +8,46 @@
     --package wai-middleware-static
     --package wai-extra
     --package optparse-applicative
+    --package filepath
+    --package directory
  -}
 
 {-# LANGUAGE OverloadedStrings #-}
 
 module Main where
 
-import           Web.Scotty
+import           Data.Semigroup ((<>))
+import           Network.Wai.Middleware.RequestLogger
+import           Network.Wai.Middleware.Static
+import           Options.Applicative
+import           System.FilePath.Posix
+import qualified Text.Blaze.Html.Renderer.Text as BHRT
 import qualified Text.Blaze.Html5 as H5
 import qualified Text.Blaze.Html5.Attributes as A5
-import qualified Text.Blaze.Html.Renderer.Text as BHRT
-import           Network.Wai.Middleware.Static
-import           Network.Wai.Middleware.RequestLogger
-import           Options.Applicative
-import           Data.Semigroup ((<>))
-
+import           Web.Scotty
 
 data Opts = Opts {
   optsPort :: Int
+  , optsStaticDir :: FilePath
   } deriving Show;
 
 optsParser :: Parser Opts
-optsParser = Opts <$> option auto (
-  long "port" <> help "Listen port" <> showDefault <> value 3000 <> metavar "INT"
-  )
+optsParser = Opts
+             <$> option auto (long "port"
+                               <> help "Listen port"
+                               <> showDefault
+                               <> value 3000
+                               <> metavar "INT")
+             <*> option auto (long "static"
+                              <> help "Static directory"
+                              <> showDefault
+                              <> value "./static"
+                              <> metavar "STR")
 
 ws :: Opts -> IO()
-ws (Opts port) = do
+ws (Opts port staticDir) = do
   scotty port $ do
-    middleware $ staticPolicy $ addBase "./static"
+    middleware $ staticPolicy $ addBase staticDir
     middleware logStdoutDev
     get "/" $ html $ BHRT.renderHtml $ H5.html $ do
       H5.title "73px"

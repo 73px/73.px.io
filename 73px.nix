@@ -1,5 +1,5 @@
-{ mkDerivation, base, blaze-html, optparse-applicative, scotty
-, stdenv, text, wai-extra, wai-middleware-static
+{ mkDerivation, base, blaze-html, filepath, optparse-applicative
+, scotty, stdenv, text, wai-extra, wai-middleware-static
 }:
 mkDerivation {
   pname = "73px";
@@ -8,10 +8,9 @@ mkDerivation {
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [
-    base blaze-html optparse-applicative scotty text wai-extra
+    base blaze-html filepath optparse-applicative scotty text wai-extra
     wai-middleware-static
   ];
   homepage = "https://73.px.io";
   license = stdenv.lib.licenses.bsd3;
-  maintainers = with stdenv.lib.maintainers; [ apeyroux ];
 }

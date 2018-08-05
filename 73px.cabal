@@ -23,6 +23,8 @@ executable 73px
   build-depends:       base >=4.10 && <4.11
                      , text
                      , scotty
+                     , filepath
+                     , directory
                      , blaze-html
                      , wai-middleware-static
                      , wai-extra
