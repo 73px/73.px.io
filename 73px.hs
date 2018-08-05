@@ -28,7 +28,7 @@ import           Web.Scotty
 
 data Opts = Opts {
   optsPort :: Int
-  , optsStaticDir :: FilePath
+  , optsStaticDir :: String
   } deriving Show;
 
 optsParser :: Parser Opts
