@@ -28,7 +28,7 @@ import           Web.Scotty
 
 data Opts = Opts {
   optsPort :: Int
-  , optsStaticDir :: String
+  , optsStaticDir :: FilePath
   } deriving Show;
 
 optsParser :: Parser Opts
@@ -38,11 +38,11 @@ optsParser = Opts
                                <> showDefault
                                <> value 3000
                                <> metavar "INT")
-             <*> option auto (long "static"
+             <*> strOption (long "static"
                               <> help "Static directory"
                               <> showDefault
                               <> value "./static"
-                              <> metavar "STR")
+                              <> metavar "STRING")
 
 ws :: Opts -> IO()
 ws (Opts port staticDir) = do
