@@ -36,7 +36,7 @@ optsParser = Opts <$> option auto (
 ws :: Opts -> IO()
 ws (Opts port) = do
   scotty port $ do
-    middleware $ staticPolicy $ addBase "static"
+    middleware $ staticPolicy $ addBase "./static"
     middleware logStdoutDev
     get "/" $ html $ BHRT.renderHtml $ H5.html $ do
       H5.title "73px"
