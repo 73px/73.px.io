@@ -19,7 +19,7 @@ cabal-version:       >=1.10
 executable 73px
   main-is:             73px.hs
   -- other-modules:       
-  -- other-extensions:    
+  -- other-extensions:
   build-depends:       base >=4.10 && <4.11
                      , text
                      , scotty
