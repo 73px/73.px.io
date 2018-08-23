@@ -1,8 +1,17 @@
 with import <nixpkgs> {};
 
-{
+let
 
-  static = haskell.lib.justStaticExecutables ((haskellPackages.callPackage ./default.nix { }).overrideDerivation(old: {
+  defaultnix = runCommand "generate-default-nix" {
+    buildCommand = ''
+      cabal2nix ${./.} > "$out"
+    '';
+    buildInputs = with pkgs; [ cabal2nix ];
+  } "";
+
+in {
+
+  static = haskell.lib.justStaticExecutables ((haskellPackages.callPackage (defaultnix) { }).overrideDerivation(old: {
     enableSharedExecutables = false;
     enableSharedLibraries = false;
     configureFlags = [
@@ -15,6 +24,6 @@ with import <nixpkgs> {};
     ];
   }));
 
-  standard = haskellPackages.callPackage ./. {};
+  standard = haskellPackages.callPackage (defaultnix) {};
 
 }
